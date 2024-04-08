@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Estadisticas {
-    private double ocio;
+    private List<Double>ocio;
     private double ocioMin;
     private double ocioMax;
     private double espera;
@@ -19,7 +19,7 @@ public class Estadisticas {
     List<Double> ultimaSalida;
 
     public Estadisticas(int nroServidores) {
-        this.ocio = 0;
+        this.ocio = new ArrayList<>();
         this.ocioMin = Integer.MAX_VALUE;
         this.ocioMax = 0;
         this.espera = 0;
@@ -35,6 +35,7 @@ public class Estadisticas {
 
         for (int i = 0; i < nroServidores; i++) {
             ultimaSalida.add(0.0);
+            ocio.add(0.0);
         }
     }
 
@@ -50,10 +51,15 @@ public class Estadisticas {
         this.cantProcesados = this.cantProcesados +1 ;
     }
 
-    public void coleccionarOcio(Evento evt, Evento salida, int indexServer){
+    public void coleccionarOcio(Evento evt, Evento salida, int indexServer, List<Servidor> servers){
         tiempoServer = tiempoServer + (salida.getClock()- evt.getClock());
-        ocio = ocio + (evt.getClock()-ultimaSalida.get(indexServer));
-        System.out.println(ultimaSalida.get(indexServer));
+        //ocio = ocio + (evt.getClock()-ultimaSalida.get(indexServer));
+
+        for (int i = 0; i < servers.size(); i++) {
+            if(servers.get(i).getEstado() == salida){
+                ocio.set(i, ocio.get(i)+ evt.getClock()-ultimaSalida.get(i));
+            }
+        }
 
         if(evt.getClock()-ultimaSalida.get(indexServer) > ocioMax) ocioMax = evt.getClock()-ultimaSalida.get(indexServer);
         if(evt.getClock()-ultimaSalida.get(indexServer) < ocioMin && evt.getClock()-ultimaSalida.get(indexServer) > 0) ocioMin = evt.getClock()-ultimaSalida.get(indexServer);
@@ -85,11 +91,16 @@ public class Estadisticas {
         return ultimaSalida;
     }
 
-    @Override
-    public String toString() {
+    public String toString(List<Servidor> servers, double tiempoSimulacion) {
         esperaMin = (esperaMin==Integer.MAX_VALUE) ? 0 : esperaMin;
         ocioMin = (ocioMin==Integer.MAX_VALUE) ? 0 : ocioMin;
         tiempoServerMin = (tiempoServerMin==Integer.MAX_VALUE) ? 0 : tiempoServerMin;
+
+        for (int i = 0; i < ocio.size(); i++) {
+            if(servers.get(i).getEstado() == null){
+                ocio.set(i, ocio.get(i) + tiempoSimulacion - ultimaSalida.get(i));
+            }
+        }
 
         return "Estadisticas: \n"  +
                 "ocio acumulado: " + ocio +

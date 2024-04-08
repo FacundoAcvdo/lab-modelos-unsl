@@ -12,7 +12,7 @@ public abstract class Engine {
     List<Servidor> servers;
 
 
-    public Engine(int nroServidores, int tiempoSimulacion, int nroColas) {
+    public Engine(int nroServidores, double tiempoSimulacion, int nroColas) {
         this.fel = new Fel(new ArrayList<>());
         this.stats = new Estadisticas(nroServidores);
         this.servers = new ArrayList<>();

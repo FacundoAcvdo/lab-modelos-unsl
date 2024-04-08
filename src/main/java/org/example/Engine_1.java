@@ -3,13 +3,13 @@ package org.example;
 import java.util.Random;
 
 public class Engine_1 extends Engine implements nextRand_A, nextRand_S{
-    public Engine_1(int nroServidores, int tiempoSimulacion, int nroColas) {
+    public Engine_1(int nroServidores, double tiempoSimulacion, int nroColas) {
         super(nroServidores, tiempoSimulacion, nroColas);
     }
 
     @Override
     public void run() {
-        Evento_A primerArribo = new Evento_A(0, new Entidad(1));
+        Evento_A primerArribo = new Evento_A(0, new Entidad(1), new CriterioEtapa1());
         fel.insert(primerArribo);
 
         while(fel.getInminentClock()<= tiempoSimulacion ){
@@ -18,7 +18,7 @@ public class Engine_1 extends Engine implements nextRand_A, nextRand_S{
             evt.planificate(fel, stats, cola, evt, servers, nextRandA(), nextRandS());
         }
 
-        System.out.println(stats);
+        System.out.println(stats.toString(servers, tiempoSimulacion));
     }
 
     @Override
