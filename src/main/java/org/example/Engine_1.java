@@ -9,12 +9,11 @@ public class Engine_1 extends Engine implements nextRand_A, nextRand_S{
 
     @Override
     public void run() {
-
         Evento_A primerArribo = new Evento_A(0, new Entidad(1));
         fel.insert(primerArribo);
 
         while(fel.getInminentClock()<= tiempoSimulacion ){
-            System.out.println(fel);
+            //System.out.println(fel);
             Evento evt = fel.getInminent();
             evt.planificate(fel, stats, cola, evt, servers, nextRandA(), nextRandS());
         }
@@ -59,7 +58,6 @@ public class Engine_1 extends Engine implements nextRand_A, nextRand_S{
         }else{
             value = 17;
         }
-
         return value;
     }
 }

@@ -11,7 +11,7 @@ public class Estadisticas {
     private double esperaMin;
     private double esperaMax;
     private int cantArribos;
-    private int cantSalidas;
+    private int cantProcesados;
     private int colaMax;
     private double tiempoServerMax;
     private double tiempoServerMin;
@@ -20,17 +20,17 @@ public class Estadisticas {
 
     public Estadisticas(int nroServidores) {
         this.ocio = 0;
-        this.ocioMin = 99;
+        this.ocioMin = Integer.MAX_VALUE;
         this.ocioMax = 0;
         this.espera = 0;
-        this.esperaMin = 99;
+        this.esperaMin = Integer.MAX_VALUE;
         this.esperaMax = 0;
         this.cantArribos = 0;
-        this.cantSalidas = 0;
+        this.cantProcesados = 0;
         this.colaMax = 0;
         this.ultimaSalida = new ArrayList<>();
         this.tiempoServer = 0;
-        this.tiempoServerMin = 99;
+        this.tiempoServerMin = Integer.MAX_VALUE;
         this.tiempoServerMax = 0;
 
         for (int i = 0; i < nroServidores; i++) {
@@ -42,9 +42,18 @@ public class Estadisticas {
         ultimaSalida.set(index, clock);
     }
 
+    public void setCantArribos() {
+        this.cantArribos = this.cantArribos + 1;
+    }
+
+    public void setCantProcesados() {
+        this.cantProcesados = this.cantProcesados +1 ;
+    }
+
     public void coleccionarOcio(Evento evt, Evento salida, int indexServer){
         tiempoServer = tiempoServer + (salida.getClock()- evt.getClock());
         ocio = ocio + (evt.getClock()-ultimaSalida.get(indexServer));
+        System.out.println(ultimaSalida.get(indexServer));
 
         if(evt.getClock()-ultimaSalida.get(indexServer) > ocioMax) ocioMax = evt.getClock()-ultimaSalida.get(indexServer);
         if(evt.getClock()-ultimaSalida.get(indexServer) < ocioMin && evt.getClock()-ultimaSalida.get(indexServer) > 0) ocioMin = evt.getClock()-ultimaSalida.get(indexServer);
@@ -72,22 +81,28 @@ public class Estadisticas {
         this.colaMax = colaMax;
     }
 
+    public List<Double> getUltimaSalida() {
+        return ultimaSalida;
+    }
+
     @Override
     public String toString() {
-        return "Estadisticas{" +
-                "ocio=" + ocio +
-                ", ocioMin=" + ocioMin +
-                ", ocioMax=" + ocioMax +
-                ", espera=" + espera +
-                ", esperaMin=" + esperaMin +
-                ", esperaMax=" + esperaMax +
-                ", cantArribos=" + cantArribos +
-                ", cantSalidas=" + cantSalidas +
-                ", colaMax=" + colaMax +
-                ", tiempoServerMax=" + tiempoServerMax +
-                ", tiempoServerMin=" + tiempoServerMin +
-                ", tiempoServer=" + tiempoServer +
-                ", ultimaSalida=" + ultimaSalida +
-                '}';
+        esperaMin = (esperaMin==Integer.MAX_VALUE) ? 0 : esperaMin;
+        ocioMin = (ocioMin==Integer.MAX_VALUE) ? 0 : ocioMin;
+        tiempoServerMin = (tiempoServerMin==Integer.MAX_VALUE) ? 0 : tiempoServerMin;
+
+        return "Estadisticas: \n"  +
+                "ocio acumulado: " + ocio +
+                "\nocio mínimo:" + ocioMin +
+                "\nocio máximo: " + ocioMax +
+                "\nespera acumulada: " + espera +
+                "\nespera mínima: " + esperaMin +
+                "\nespera máxima: " + esperaMax +
+                "\ncantidad de arribos: " + cantArribos +
+                "\ncantidad de arribos procesados: " + cantProcesados +
+                "\ncola máxima: " + colaMax +
+                "\ntiempo máximo en servidor: " + tiempoServerMax +
+                "\ntiempo mínimo en servidor: " + tiempoServerMin +
+                "\ntiempo acumulado en servidor: " + tiempoServer;
     }
 }

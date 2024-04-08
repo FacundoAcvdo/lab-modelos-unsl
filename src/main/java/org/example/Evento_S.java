@@ -12,6 +12,8 @@ public class Evento_S extends Evento{
 
         int value = 0;
 
+        stats.setCantProcesados();
+
         for (int i = 0; i < servers.size(); i++) {
             if (servers.get(i).getEstado() == evt) value = i;
         }

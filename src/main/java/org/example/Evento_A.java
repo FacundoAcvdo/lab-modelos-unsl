@@ -12,6 +12,7 @@ public class Evento_A extends Evento implements Criterio{
     public void planificate(Fel fel, Estadisticas stats, List<List<Evento>> colas, Evento evt, List<Servidor> servers, double tiempoArribo, double tiempoSalida) {
 
         Optional<Servidor> checkout = getServer(servers);
+        stats.setCantArribos();
 
         if(checkout.isEmpty()){
             getCola(colas).add(evt);
