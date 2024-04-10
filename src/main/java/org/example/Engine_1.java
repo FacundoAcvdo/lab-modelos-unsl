@@ -3,8 +3,8 @@ package org.example;
 import java.util.Random;
 
 public class Engine_1 extends Engine implements nextRand_A, nextRand_S{
-    public Engine_1(int nroServidores, double tiempoSimulacion, int nroColas) {
-        super(nroServidores, tiempoSimulacion, nroColas);
+    public Engine_1(int nroServidores, double tiempoSimulacion, int nroColas, Randomizer randomizer) {
+        super(nroServidores, tiempoSimulacion, nroColas, randomizer);
     }
 
     @Override
@@ -23,41 +23,37 @@ public class Engine_1 extends Engine implements nextRand_A, nextRand_S{
 
     @Override
     public double nextRandS() {
-        Random rand = new Random();
+        double random = this.randomizer.nextDouble();
 
-        double random = rand.nextDouble();
+        double value = 11;
 
-        double value;
-
-        if(random < 0.38){
-            value = 8.0;
-        }
-        else if (random > 0.38 && random <= 0.70) {
-            value = 10;
-        } else if (random > 0.70 && random <= 0.80) {
-            value = 13;
-        }else{
-            value = 15;
-        }
+//        if(random < 0.38){
+//            value = 8.0;
+//        }
+//        else if (random > 0.38 && random <= 0.70) {
+//            value = 10;
+//        } else if (random > 0.70 && random <= 0.80) {
+//            value = 13;
+//        }else{
+//            value = 15;
+//        }
 
         return value;
     }
 
     @Override
     public double nextRandA() {
-        Random rand = new Random();
+        double random = randomizer.nextDouble();
 
-        double random = rand.nextDouble();
+        double value=10;
 
-        double value;
-
-        if(random < 0.35){
-            value = 10;
-        } else if(random >= 0.35 && random < 0.80) {
-            value = 15;
-        }else{
-            value = 17;
-        }
+//        if(random < 0.35){
+//            value = 10;
+//        } else if(random >= 0.35 && random < 0.80) {
+//            value = 15;
+//        }else{
+//            value = 17;
+//        }
         return value;
     }
 }

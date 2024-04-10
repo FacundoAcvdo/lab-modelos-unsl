@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Estadisticas {
-    private List<Double>ocio;
+    private List<Double> ocio;
     private double ocioMin;
     private double ocioMax;
     private double espera;
@@ -48,35 +48,44 @@ public class Estadisticas {
     }
 
     public void setCantProcesados() {
-        this.cantProcesados = this.cantProcesados +1 ;
+        this.cantProcesados = this.cantProcesados + 1;
     }
 
-    public void coleccionarOcio(Evento evt, Evento salida, int indexServer, List<Servidor> servers){
-        tiempoServer = tiempoServer + (salida.getClock()- evt.getClock());
-        //ocio = ocio + (evt.getClock()-ultimaSalida.get(indexServer));
+    public void coleccionarOcio(Evento evt, Evento salida, int indexServer, List<Servidor> servers) {
+        if (salida.getClock() < 100){
+            tiempoServer = tiempoServer + (salida.getClock() - evt.getClock());
+
+            if (salida.getClock() - evt.getClock() > tiempoServerMax) tiempoServerMax = salida.getClock() - evt.getClock();
+            if (salida.getClock() - evt.getClock() < tiempoServerMin && salida.getClock() - evt.getClock() > 0) tiempoServerMin = salida.getClock() - evt.getClock();
+        }
 
         for (int i = 0; i < servers.size(); i++) {
-            if(servers.get(i).getEstado() == salida){
-                ocio.set(i, ocio.get(i)+ evt.getClock()-ultimaSalida.get(i));
+            if (servers.get(i).getEstado() == salida) {
+                ocio.set(i, ocio.get(i) + evt.getClock() - ultimaSalida.get(i));
             }
         }
 
-        if(evt.getClock()-ultimaSalida.get(indexServer) > ocioMax) ocioMax = evt.getClock()-ultimaSalida.get(indexServer);
-        if(evt.getClock()-ultimaSalida.get(indexServer) < ocioMin && evt.getClock()-ultimaSalida.get(indexServer) > 0) ocioMin = evt.getClock()-ultimaSalida.get(indexServer);
-
-        if(salida.getClock()- evt.getClock() > tiempoServerMax) tiempoServerMax = salida.getClock()- evt.getClock();
-        if(salida.getClock()- evt.getClock() < tiempoServerMin && salida.getClock()- evt.getClock() > 0) tiempoServerMin = salida.getClock()- evt.getClock();
+        if (evt.getClock() - ultimaSalida.get(indexServer) > ocioMax)
+            ocioMax = evt.getClock() - ultimaSalida.get(indexServer);
+        if (evt.getClock() - ultimaSalida.get(indexServer) < ocioMin && evt.getClock() - ultimaSalida.get(indexServer) > 0)
+            ocioMin = evt.getClock() - ultimaSalida.get(indexServer);
     }
 
-    public void coleccionarEspera(Evento evt, Evento arribo, Evento salida){
-        espera = espera + (evt.getClock()-arribo.getClock());
-        tiempoServer = tiempoServer + (salida.getClock()-arribo.getClock());
+    public void coleccionarEspera(Evento evt, Evento arribo, Evento salida) {
+        if (salida.getClock() < 100){
+            tiempoServer = tiempoServer + (salida.getClock() - arribo.getClock());
 
-        if(evt.getClock()-arribo.getClock() > esperaMax) esperaMax = evt.getClock()-arribo.getClock();
-        if(evt.getClock()-arribo.getClock() < esperaMin && evt.getClock()-arribo.getClock() > 0) esperaMin = evt.getClock()-arribo.getClock();
+            if (salida.getClock() - arribo.getClock() > tiempoServerMax)
+                tiempoServerMax = salida.getClock() - arribo.getClock();
+            if (salida.getClock() - arribo.getClock() < tiempoServerMin && salida.getClock() - evt.getClock() > 0)
+                tiempoServerMin = salida.getClock() - arribo.getClock();
+        }
 
-        if(salida.getClock()-arribo.getClock() > tiempoServerMax) tiempoServerMax = salida.getClock()-arribo.getClock();
-        if(salida.getClock()-arribo.getClock() < tiempoServerMin && salida.getClock()- evt.getClock() > 0) tiempoServerMin = salida.getClock()-arribo.getClock();
+        espera = espera + (evt.getClock() - arribo.getClock());
+
+        if (evt.getClock() - arribo.getClock() > esperaMax) esperaMax = evt.getClock() - arribo.getClock();
+        if (evt.getClock() - arribo.getClock() < esperaMin && evt.getClock() - arribo.getClock() > 0)
+            esperaMin = evt.getClock() - arribo.getClock();
     }
 
     public int getColaMax() {
@@ -92,17 +101,17 @@ public class Estadisticas {
     }
 
     public String toString(List<Servidor> servers, double tiempoSimulacion) {
-        esperaMin = (esperaMin==Integer.MAX_VALUE) ? 0 : esperaMin;
-        ocioMin = (ocioMin==Integer.MAX_VALUE) ? 0 : ocioMin;
-        tiempoServerMin = (tiempoServerMin==Integer.MAX_VALUE) ? 0 : tiempoServerMin;
+        esperaMin = (esperaMin == Integer.MAX_VALUE) ? 0 : esperaMin;
+        ocioMin = (ocioMin == Integer.MAX_VALUE) ? 0 : ocioMin;
+        tiempoServerMin = (tiempoServerMin == Integer.MAX_VALUE) ? 0 : tiempoServerMin;
 
         for (int i = 0; i < ocio.size(); i++) {
-            if(servers.get(i).getEstado() == null){
+            if (servers.get(i).getEstado() == null) {
                 ocio.set(i, ocio.get(i) + tiempoSimulacion - ultimaSalida.get(i));
             }
         }
 
-        return "Estadisticas: \n"  +
+        return "Estadisticas: \n" +
                 "ocio acumulado: " + ocio +
                 "\nocio mínimo:" + ocioMin +
                 "\nocio máximo: " + ocioMax +
@@ -112,8 +121,8 @@ public class Estadisticas {
                 "\ncantidad de arribos: " + cantArribos +
                 "\ncantidad de arribos procesados: " + cantProcesados +
                 "\ncola máxima: " + colaMax +
-                "\ntiempo máximo en servidor: " + tiempoServerMax +
-                "\ntiempo mínimo en servidor: " + tiempoServerMin +
-                "\ntiempo acumulado en servidor: " + tiempoServer;
+                "\ntiempo máximo en sistema: " + tiempoServerMax +
+                "\ntiempo mínimo en sistema: " + tiempoServerMin +
+                "\ntiempo acumulado en sistema: " + tiempoServer;
     }
 }
