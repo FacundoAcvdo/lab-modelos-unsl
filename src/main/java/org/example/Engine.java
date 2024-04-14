@@ -14,7 +14,7 @@ public abstract class Engine {
 
     public Engine(int nroServidores, double tiempoSimulacion, int nroColas, Randomizer randomizer) {
         this.fel = new Fel(new ArrayList<>());
-        this.stats = new Estadisticas(nroServidores);
+        this.stats = new Estadisticas(nroServidores, tiempoSimulacion);
         this.servers = new ArrayList<>();
         this.cola = new ArrayList<>();
         this.tiempoSimulacion = tiempoSimulacion;

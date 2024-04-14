@@ -25,35 +25,35 @@ public class Engine_1 extends Engine implements nextRand_A, nextRand_S{
     public double nextRandS() {
         double random = this.randomizer.nextDouble();
 
-        double value = 11;
+        double value;
 
-//        if(random < 0.38){
-//            value = 8.0;
-//        }
-//        else if (random > 0.38 && random <= 0.70) {
-//            value = 10;
-//        } else if (random > 0.70 && random <= 0.80) {
-//            value = 13;
-//        }else{
-//            value = 15;
-//        }
+        if(random < 0.38){
+            value = 8.0;
+        }
+        else if (random > 0.38 && random <= 0.70) {
+            value = 10;
+        } else if (random > 0.70 && random <= 0.80) {
+            value = 13;
+        }else{
+            value = 15;
+        }
 
         return value;
     }
 
     @Override
     public double nextRandA() {
-        double random = randomizer.nextDouble();
+        double random = this.randomizer.nextDouble();
 
-        double value=10;
+        double value;
 
-//        if(random < 0.35){
-//            value = 10;
-//        } else if(random >= 0.35 && random < 0.80) {
-//            value = 15;
-//        }else{
-//            value = 17;
-//        }
+        if(random < 0.35){
+            value = 10;
+        } else if(random >= 0.35 && random < 0.80) {
+            value = 15;
+        }else{
+            value = 17;
+        }
         return value;
     }
 }

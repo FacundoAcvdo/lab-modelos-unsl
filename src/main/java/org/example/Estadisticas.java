@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Estadisticas {
     private List<Double> ocio;
+    private double tiempoSimulacion;
     private double ocioMin;
     private double ocioMax;
     private double espera;
@@ -18,8 +19,9 @@ public class Estadisticas {
     private double tiempoServer;
     List<Double> ultimaSalida;
 
-    public Estadisticas(int nroServidores) {
+    public Estadisticas(int nroServidores, double tiempoSimulacion) {
         this.ocio = new ArrayList<>();
+        this.tiempoSimulacion = tiempoSimulacion;
         this.ocioMin = Integer.MAX_VALUE;
         this.ocioMax = 0;
         this.espera = 0;
@@ -52,7 +54,7 @@ public class Estadisticas {
     }
 
     public void coleccionarOcio(Evento evt, Evento salida, int indexServer, List<Servidor> servers) {
-        if (salida.getClock() < 100){
+        if (salida.getClock() <= tiempoSimulacion){
             tiempoServer = tiempoServer + (salida.getClock() - evt.getClock());
 
             if (salida.getClock() - evt.getClock() > tiempoServerMax) tiempoServerMax = salida.getClock() - evt.getClock();
@@ -72,7 +74,7 @@ public class Estadisticas {
     }
 
     public void coleccionarEspera(Evento evt, Evento arribo, Evento salida) {
-        if (salida.getClock() < 100){
+        if (salida.getClock() <= tiempoSimulacion){
             tiempoServer = tiempoServer + (salida.getClock() - arribo.getClock());
 
             if (salida.getClock() - arribo.getClock() > tiempoServerMax)
