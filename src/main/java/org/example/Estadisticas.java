@@ -14,10 +14,11 @@ public class Estadisticas {
     private int cantArribos;
     private int cantProcesados;
     private int colaMax;
+    private int colaMin;
     private double tiempoServerMax;
     private double tiempoServerMin;
     private double tiempoServer;
-    List<Double> ultimaSalida;
+    private List<Double> ultimaSalida;
 
     public Estadisticas(int nroServidores, double tiempoSimulacion) {
         this.ocio = new ArrayList<>();
@@ -29,6 +30,7 @@ public class Estadisticas {
         this.esperaMax = 0;
         this.cantArribos = 0;
         this.cantProcesados = 0;
+        this.colaMin = Integer.MAX_VALUE;
         this.colaMax = 0;
         this.ultimaSalida = new ArrayList<>();
         this.tiempoServer = 0;
@@ -40,6 +42,10 @@ public class Estadisticas {
             ocio.add(0.0);
         }
     }
+
+    public int getColaMin() {return colaMin;}
+
+    public void setColaMin(int colaMin) {this.colaMin = colaMin;}
 
     public void setUltimaSalida(int index, double clock) {
         ultimaSalida.set(index, clock);
@@ -106,25 +112,34 @@ public class Estadisticas {
         esperaMin = (esperaMin == Integer.MAX_VALUE) ? 0 : esperaMin;
         ocioMin = (ocioMin == Integer.MAX_VALUE) ? 0 : ocioMin;
         tiempoServerMin = (tiempoServerMin == Integer.MAX_VALUE) ? 0 : tiempoServerMin;
-
+        colaMin = (colaMin == Integer.MAX_VALUE) ? 0 : colaMin;
         for (int i = 0; i < ocio.size(); i++) {
             if (servers.get(i).getEstado() == null) {
                 ocio.set(i, ocio.get(i) + tiempoSimulacion - ultimaSalida.get(i));
             }
         }
 
-        return "Estadisticas: \n" +
-                "ocio acumulado: " + ocio +
-                "\nocio mínimo:" + ocioMin +
-                "\nocio máximo: " + ocioMax +
-                "\nespera acumulada: " + espera +
-                "\nespera mínima: " + esperaMin +
-                "\nespera máxima: " + esperaMax +
-                "\ncantidad de arribos: " + cantArribos +
-                "\ncantidad de arribos procesados: " + cantProcesados +
-                "\ncola máxima: " + colaMax +
-                "\ntiempo máximo en sistema: " + tiempoServerMax +
-                "\ntiempo mínimo en sistema: " + tiempoServerMin +
-                "\ntiempo acumulado en sistema: " + tiempoServer;
+        return "Estadisticas:" +
+            "\n-------------------------"+
+            "\nocio acumulado: " + ocio +
+            "\nocio mínimo: " + ocioMin +
+            "\nocio máximo: " + ocioMax +
+            "\nocio medio: " + (double)Math.round((ocio.getFirst()/(cantProcesados)) * 100d) / 100d +
+            "\nproporción de ociosidad: "+ (double)Math.round(((ocio.getFirst()/tiempoSimulacion)*100) * 100d) / 100d+ "%" +
+            "\n-------------------------"+
+            "\nespera acumulada: " + espera +
+            "\nespera mínima: " + esperaMin +
+            "\nespera máxima: " + esperaMax +
+            "\nespera media: " + (double)Math.round((espera/cantProcesados) * 100d) / 100d +
+            "\n-------------------------"+
+            "\ncantidad de arribos: " + cantArribos +
+            "\ncantidad de arribos procesados: " + cantProcesados +
+            "\ncola máxima: " + colaMax +
+            "\ncola mínima: " + colaMin +
+            "\n-------------------------"+
+            "\ntiempo acumulado en sistema: "+tiempoServer +
+            "\ntiempo máximo en sistema: " + tiempoServerMax +
+            "\ntiempo mínimo en sistema: " + tiempoServerMin +
+            "\ntiempo medio en sistema: " + (double)Math.round((tiempoServer/cantProcesados) * 100d) / 100d;
     }
 }

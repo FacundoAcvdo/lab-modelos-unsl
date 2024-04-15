@@ -7,7 +7,7 @@ public abstract class Evento {
     private final int prioridad;
     private final double clock;
 
-    public abstract void planificate(Fel fel, Estadisticas stats, List<List<Evento>> cola, Evento evt, List<Servidor> servers, double tiempoArribo, double tiempoSalida);
+    public abstract void planificate(Fel fel, Estadisticas stats, List<List<Evento>> cola, List<Servidor> servers, double tiempoArribo, double tiempoSalida);
 
     public Evento(int prioridad, double clock, Entidad entidad) {
         this.entidad = entidad;

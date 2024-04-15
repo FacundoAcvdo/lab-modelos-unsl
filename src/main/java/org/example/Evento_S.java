@@ -8,37 +8,37 @@ public class Evento_S extends Evento{
     }
 
     @Override
-    public void planificate(Fel fel, Estadisticas stats, List<List<Evento>> colas, Evento evt, List<Servidor> servers, double tiempoArribo, double tiempoSalida) {
+    public void planificate(Fel fel, Estadisticas stats, List<List<Evento>> colas, List<Servidor> servers, double tiempoArribo, double tiempoSalida) {
 
         int value = 0;
 
         stats.setCantProcesados();
 
         for (int i = 0; i < servers.size(); i++) {
-            if (servers.get(i).getEstado() == evt) value = i;
+            if (servers.get(i).getEstado() == this) value = i;
         }
 
         if(colas.get(value).isEmpty()){
 
             for (Servidor server : servers) {
-                if (server.getEstado() == evt) server.setEstado(null);
+                if (server.getEstado() == this) server.setEstado(null);
             }
 
-            stats.setUltimaSalida(value ,evt.getClock());
+            stats.setUltimaSalida(value ,this.getClock());
 
         }else{
             Evento_A arribo = (Evento_A) colas.get(value).getFirst();
             colas.get(value).removeFirst();
 
-            Evento_S salida = new Evento_S(evt.getClock()+tiempoSalida, arribo.getEntidad());
+            Evento_S salida = new Evento_S(this.getClock()+tiempoSalida, arribo.getEntidad());
 
             for (Servidor server : servers) {
-                if (server.getEstado() == evt) server.setEstado(salida);
+                if (server.getEstado() == this) server.setEstado(salida);
             }
 
             fel.insert(salida);
 
-            stats.coleccionarEspera(evt, arribo, salida);
+            stats.coleccionarEspera(this, arribo, salida);
         }
     }
 }

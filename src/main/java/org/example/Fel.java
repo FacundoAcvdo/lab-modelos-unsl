@@ -3,8 +3,7 @@ package org.example;
 import java.util.List;
 
 public class Fel {
-    List<Evento> fel;
-
+    private List<Evento> fel;
     public Fel(List<Evento> fel) {
         this.fel = fel;
     }

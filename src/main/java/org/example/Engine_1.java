@@ -15,7 +15,7 @@ public class Engine_1 extends Engine implements nextRand_A, nextRand_S{
         while(fel.getInminentClock()<= tiempoSimulacion ){
             //System.out.println(fel);
             Evento evt = fel.getInminent();
-            evt.planificate(fel, stats, cola, evt, servers, nextRandA(), nextRandS());
+            evt.planificate(fel, stats, cola, servers, nextRandA(), nextRandS());
         }
 
         System.out.println(stats.toString(servers, tiempoSimulacion));
