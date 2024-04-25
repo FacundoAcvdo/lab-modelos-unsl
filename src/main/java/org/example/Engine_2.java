@@ -1,9 +1,9 @@
 package org.example;
-
-public class Engine_1 extends Engine implements nextRand_A, nextRand_S{
+public class Engine_2 extends Engine implements nextRand_A, nextRand_S{
     private double nextRandA;
     private double nextRandS;
-    public Engine_1(int nroServidores, double tiempoSimulacion, int nroColas, Randomizer randomizer) {
+
+    public Engine_2(int nroServidores, double tiempoSimulacion, int nroColas, Randomizer randomizer) {
         super(nroServidores, tiempoSimulacion, nroColas, randomizer);
 
         this.nextRandA = 0.0;
@@ -11,13 +11,12 @@ public class Engine_1 extends Engine implements nextRand_A, nextRand_S{
     }
 
 
-
     @Override
     public void run() {
         Evento_A primerArribo = new Evento_A(0, new Entidad(1), new CriterioEtapa1());
         fel.insert(primerArribo);
 
-        while(fel.getInminentClock()<= tiempoSimulacion ){
+        while (fel.getInminentClock() <= tiempoSimulacion) {
             nextRandA = nextRandA();
             nextRandS = nextRandS();
 
@@ -31,34 +30,19 @@ public class Engine_1 extends Engine implements nextRand_A, nextRand_S{
     @Override
     public double nextRandS() {
         double random = this.randomizer.nextDouble();
-        double value;
 
-        if(random < 0.38){
-            value = 8.0;
-        }
-        else if (random > 0.38 && random <= 0.70) {
-            value = 10;
-        } else if (random > 0.70 && random <= 0.80) {
-            value = 13;
-        }else{
-            value = 15;
-        }
-
-        return value;
+        return 10 + (25-10)*random;
     }
 
     @Override
     public double nextRandA() {
-        double random = randomizer.nextDouble();
-        double value;
+        double clock = (fel.getInminentClock() % 1440) / 60;
+        double random = this.randomizer.nextDouble();
 
-        if(random < 0.35){
-            value = 10;
-        } else if(random >= 0.35 && random < 0.80) {
-            value = 15;
-        }else{
-            value = 17;
+        if (clock >= 9 && clock <= 13.0 || clock >= 20 && clock <= 23) {
+            return (-15) * Math.log(1 - random);
+        } else {
+            return (-9) * Math.log(1 - random);
         }
-        return value;
     }
 }

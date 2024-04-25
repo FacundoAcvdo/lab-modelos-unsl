@@ -24,7 +24,7 @@ public class Evento_A extends Evento{
             Evento_S salida = new Evento_S(this.getClock()+tiempoSalida, this.getEntidad());
 
             servers.get(servers.indexOf(checkout.get())).setEstado(salida);
-
+            servers.get(servers.indexOf(checkout.get())).setDesgaste(5, 1);
             fel.insert(salida);
 
             stats.coleccionarOcio(this, salida, servers.indexOf(checkout.get()), servers);

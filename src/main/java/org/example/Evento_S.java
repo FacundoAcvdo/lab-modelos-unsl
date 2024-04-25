@@ -34,6 +34,7 @@ public class Evento_S extends Evento{
 
             for (Servidor server : servers) {
                 if (server.getEstado() == this) server.setEstado(salida);
+                if (server.getEstado() == this) server.setDesgaste(5,1);
             }
 
             fel.insert(salida);

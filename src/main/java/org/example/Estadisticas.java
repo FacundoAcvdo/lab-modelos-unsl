@@ -119,6 +119,12 @@ public class Estadisticas {
             }
         }
 
+        List<Double> desgastes = new ArrayList<>();
+
+        for (int i = 0; i < servers.size(); i++) {
+            desgastes.add(servers.get(i).getDesgaste());
+        }
+
         return "Estadisticas:" +
             "\n-------------------------"+
             "\nocio acumulado: " + ocio +
@@ -140,6 +146,8 @@ public class Estadisticas {
             "\ntiempo acumulado en sistema: "+tiempoServer +
             "\ntiempo máximo en sistema: " + tiempoServerMax +
             "\ntiempo mínimo en sistema: " + tiempoServerMin +
-            "\ntiempo medio en sistema: " + (double)Math.round((tiempoServer/cantProcesados) * 100d) / 100d;
+            "\ntiempo medio en sistema: " + (double)Math.round((tiempoServer/cantProcesados) * 100d) / 100d +
+            "\ndesgastes de las pistas: " + desgastes;
+
     }
 }
