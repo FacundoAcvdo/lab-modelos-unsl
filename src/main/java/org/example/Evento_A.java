@@ -1,27 +1,36 @@
 package org.example;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 public class Evento_A extends Evento{
     private Criterio criterio;
-    public Evento_A(double clock, Entidad entidad, Criterio criterio) {
+    private nextRand_S tiempoSalida;
+    private nextRand_A tiempoArribo;
+
+    public Evento_A(double clock, Entidad entidad, Criterio criterio, nextRand_S tiempoSalida, nextRand_A tiempoArribo) {
         super(2, clock, entidad);
         this.criterio = criterio;
+        this.tiempoSalida = tiempoSalida;
+        this.tiempoArribo = tiempoArribo;
     }
 
     @Override
-    public void planificate(Fel fel, Estadisticas stats, List<List<Evento>> colas, List<Servidor> servers, double tiempoArribo, double tiempoSalida) {
+    public void planificate(Fel fel, Estadisticas stats, List<List<Evento>> colas, List<Servidor> servers, HashMap<Servidor, Integer> asociados) {
+        int comparador = 0;
 
         Optional<Servidor> checkout = criterio.getServer(servers);
         stats.setCantArribos();
 
         if(checkout.isEmpty()){
+            comparador = criterio.getCola(colas).size()+1;
             criterio.getCola(colas).add(this);
-            if(criterio.getCola(colas).size() > stats.getColaMax()) stats.setColaMax(criterio.getCola(colas).size());
-            if(criterio.getCola(colas).size() < stats.getColaMin() && !criterio.getCola(colas).isEmpty()) stats.setColaMin(criterio.getCola(colas).size());
+
+            if(comparador > stats.getColaMax()) stats.setColaMax(comparador);
+            if(comparador < stats.getColaMin()) stats.setColaMin(comparador);
         }else{
-            Evento_S salida = new Evento_S(this.getClock()+tiempoSalida, this.getEntidad());
+            Evento_S salida = new Evento_S(this.getClock()+tiempoSalida.nextRandS(this.getClock()), this.getEntidad(), tiempoSalida);
 
             servers.get(servers.indexOf(checkout.get())).setEstado(salida);
             servers.get(servers.indexOf(checkout.get())).setDesgaste(5, 1);
@@ -30,7 +39,7 @@ public class Evento_A extends Evento{
             stats.coleccionarOcio(this, salida, servers.indexOf(checkout.get()), servers);
         }
 
-        Evento_A arribo = new Evento_A(this.getClock()+tiempoArribo, new Entidad(this.getEntidad().getID()+1), criterio);
+        Evento_A arribo = new Evento_A(this.getClock()+tiempoArribo.nextRandA(this.getClock()), new Entidad(this.getEntidad().getID()+1), criterio, tiempoSalida, tiempoArribo);
 
         fel.insert(arribo);
     }

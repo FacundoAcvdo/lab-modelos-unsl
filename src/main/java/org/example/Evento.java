@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class Evento {
@@ -7,7 +8,7 @@ public abstract class Evento {
     private final int prioridad;
     private final double clock;
 
-    public abstract void planificate(Fel fel, Estadisticas stats, List<List<Evento>> cola, List<Servidor> servers, double tiempoArribo, double tiempoSalida);
+    public abstract void planificate(Fel fel, Estadisticas stats, List<List<Evento>> cola, List<Servidor> servers, HashMap<Servidor, Integer> asociados);
 
     public Evento(int prioridad, double clock, Entidad entidad) {
         this.entidad = entidad;

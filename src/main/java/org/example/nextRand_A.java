@@ -1,5 +1,10 @@
 package org.example;
-@FunctionalInterface
-public interface nextRand_A {
-    double nextRandA();
+public abstract class nextRand_A {
+    Randomizer randomizer;
+
+    public nextRand_A(Randomizer randomizer) {
+        this.randomizer = randomizer;
+    }
+
+    public abstract double nextRandA(double clockInminente);
 }
