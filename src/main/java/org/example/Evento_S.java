@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Evento_S extends Evento{
-    private nextRand_S tiempoSalida;
+    private NextRand_S tiempoSalida;
 
-    public Evento_S(double clock, Entidad entidad, nextRand_S tiempoSalida) {
+    public Evento_S(double clock, Entidad entidad, NextRand_S tiempoSalida) {
         super(0, clock, entidad);
         this.tiempoSalida = tiempoSalida;
     }
@@ -18,9 +18,9 @@ public class Evento_S extends Evento{
 
         stats.setCantProcesados();
 
-        for (int i = 0; i < servers.size(); i++) {
-            if (servers.get(i).getEstado() == this){
-                value = asociados.get(servers.get(i));
+        for (Servidor servidor : servers) {
+            if (servidor.getEstado() == this) {
+                value = asociados.get(servidor);
             }
         }
 

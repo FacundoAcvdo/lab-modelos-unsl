@@ -1,8 +1,8 @@
 package org.example;
-public abstract class nextRand_A {
+public abstract class NextRand_A {
     Randomizer randomizer;
 
-    public nextRand_A(Randomizer randomizer) {
+    public NextRand_A(Randomizer randomizer) {
         this.randomizer = randomizer;
     }
 

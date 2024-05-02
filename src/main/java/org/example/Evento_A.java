@@ -6,10 +6,10 @@ import java.util.Optional;
 
 public class Evento_A extends Evento{
     private Criterio criterio;
-    private nextRand_S tiempoSalida;
-    private nextRand_A tiempoArribo;
+    private NextRand_S tiempoSalida;
+    private NextRand_A tiempoArribo;
 
-    public Evento_A(double clock, Entidad entidad, Criterio criterio, nextRand_S tiempoSalida, nextRand_A tiempoArribo) {
+    public Evento_A(double clock, Entidad entidad, Criterio criterio, NextRand_S tiempoSalida, NextRand_A tiempoArribo) {
         super(2, clock, entidad);
         this.criterio = criterio;
         this.tiempoSalida = tiempoSalida;
@@ -18,7 +18,7 @@ public class Evento_A extends Evento{
 
     @Override
     public void planificate(Fel fel, Estadisticas stats, List<List<Evento>> colas, List<Servidor> servers, HashMap<Servidor, Integer> asociados) {
-        int comparador = 0;
+        int comparador;
 
         Optional<Servidor> checkout = criterio.getServer(servers);
         stats.setCantArribos();

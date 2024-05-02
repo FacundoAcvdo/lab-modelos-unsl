@@ -11,15 +11,14 @@ public class Criterio_2 implements Criterio{
         Random random = new Random();
         List<Double> intervalos = new ArrayList<>();
 
-        int i=0;
         int k=0;
         int idServer = -1;
         double rand;
 
         List<Servidor> estados = new ArrayList<>();
 
-        for (int j = 0; j < servers.size(); j++) {
-            if(servers.get(j).getEstado()==null) estados.add(servers.get(j));
+        for (Servidor server : servers) {
+            if (server.getEstado() == null) estados.add(server);
         }
 
         if(estados.isEmpty()){
@@ -47,6 +46,6 @@ public class Criterio_2 implements Criterio{
 
     @Override
     public List<Evento> getCola(List<List<Evento>> colas) {
-        return colas.get(0);
+        return colas.getFirst();
     }
 }

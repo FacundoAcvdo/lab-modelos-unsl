@@ -3,11 +3,11 @@ package org.example;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RandomizerPruebas implements Randomizer{
+public class Randomizer_Pruebas implements Randomizer{
     private ArrayList<Double> randoms;
 
-    public RandomizerPruebas() {
-        this.randoms = new ArrayList<Double>(Arrays.asList(0.2,0.98,0.5,0.5,0.2,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.1,0.1,0.1,0.1));
+    public Randomizer_Pruebas() {
+        this.randoms = new ArrayList<>(Arrays.asList(0.001,0.5,0.999));
     }
     public double nextDouble() {
         double retorno = randoms.getFirst();

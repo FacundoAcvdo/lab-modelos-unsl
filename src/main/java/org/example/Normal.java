@@ -10,7 +10,7 @@ public class Normal implements Distribucion{
     }
     public double getVariable(Randomizer randomizer){
         double sumatoria = 0;
-        double z = 0;
+        double z;
 
         for (int i = 0; i < 36; i++) {
             sumatoria = sumatoria + randomizer.nextDouble();

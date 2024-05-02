@@ -3,7 +3,6 @@ package org.example;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 public class Engine {
     private final double tiempoSimulacion;
@@ -11,29 +10,30 @@ public class Engine {
     private List<List<Evento>> cola;
     private Estadisticas stats;
     private List<Servidor> servers;
-    private nextRand_S tiempoSalidas;
-    private nextRand_A tiempoArribos;
+    private NextRand_S tiempoSalidas;
+    private NextRand_A tiempoArribos;
     private HashMap<Servidor, Integer> asociados;
     private Criterio criterio;
-    public Engine(double tiempoSimulacion, int nroServidores, int nroColas, nextRand_S tiempoSalidas, nextRand_A tiempoArribos, Asociador asociador, Criterio criterio) {
+
+    public Engine(Builder build){
         this.fel = new Fel(new ArrayList<>());
-        this.stats = new Estadisticas(nroServidores, tiempoSimulacion);
+        this.stats = new Estadisticas(build.cantServer, build.tiempoSimulacion);
         this.servers = new ArrayList<>();
         this.cola = new ArrayList<>();
-        this.tiempoSimulacion = tiempoSimulacion;
-        this.tiempoArribos = tiempoArribos;
-        this.tiempoSalidas = tiempoSalidas;
-        this.criterio = criterio;
+        this.tiempoSimulacion = build.tiempoSimulacion;
+        this.tiempoArribos = build.tiempoArribos;
+        this.tiempoSalidas = build.tiempoSalidas;
+        this.criterio = build.criterio;
 
-        for (int i = 0; i < nroColas; i++) {
+        for (int i = 0; i < build.cantColas; i++) {
             cola.add(new ArrayList<>());
         }
 
-        for (int i = 0; i < nroServidores; i++) {
+        for (int i = 0; i < build.cantServer; i++) {
             servers.add(new Servidor());
         }
 
-        this.asociados = asociador.asociar(servers, cola);
+        this.asociados = build.asociador.asociar(servers, cola);
     }
 
     public void run(){
@@ -47,5 +47,82 @@ public class Engine {
 
         System.out.println(stats.toString(servers, tiempoSimulacion));
     }
-};
+
+    public static class Builder {
+        private Double tiempoSimulacion;
+        private Integer cantColas;
+        private Integer cantServer;
+        private NextRand_A tiempoArribos;
+        private NextRand_S tiempoSalidas;
+        private Criterio criterio;
+        private Asociador asociador;
+
+        public Engine.Builder tiempoSimulacion(double tiempoSimulacion){
+            this.tiempoSimulacion = tiempoSimulacion;
+            return this;
+        }
+
+        public Engine.Builder colas(int cantColas){
+            this.cantColas = cantColas;
+            return this;
+        }
+
+        public Engine.Builder servers(int cantServers){
+            this.cantServer = cantServers;
+            return this;
+        }
+
+        public Engine.Builder tiempoArribos(NextRand_A tiempoArribos){
+            this.tiempoArribos = tiempoArribos;
+            return this;
+        }
+
+        public Engine.Builder tiempoSalidas(NextRand_S tiempoSalidas){
+            this.tiempoSalidas = tiempoSalidas;
+            return this;
+        }
+
+        public Engine.Builder criterio(Criterio criterio){
+            this.criterio = criterio;
+            return this;
+        }
+
+        public Engine.Builder asociador(Asociador asociador){
+            this.asociador = asociador;
+            return this;
+        }
+
+        public Engine build(){
+            if(tiempoSimulacion == null || tiempoSimulacion < 0){
+                tiempoSimulacion = 40320.0;
+            }
+
+            if(cantColas == null || cantColas < 1){
+                cantColas = 1;
+            }
+
+            if (cantServer == null || cantServer < 1){
+                cantServer = 1;
+            }
+
+            if(tiempoArribos == null){
+                tiempoArribos = new TiempoEntreArribos_1(new Randomizer_1());
+            }
+
+            if(tiempoSalidas == null){
+                tiempoSalidas = new TiempoDeSalidas_1(new Randomizer_1());
+            }
+
+            if(criterio == null){
+                criterio = new Criterio_1();
+            }
+
+            if(asociador == null || (cantServer > cantColas && asociador instanceof Asociador_1_1)){
+                asociador = new Asociador_N_1();
+            }
+
+            return new Engine(this);
+        }
+    }
+}
 

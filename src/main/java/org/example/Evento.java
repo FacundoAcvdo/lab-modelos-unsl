@@ -27,13 +27,4 @@ public abstract class Evento {
     public double getClock() {
         return clock;
     }
-
-    @Override
-    public String toString() {
-        return "Evento{" +
-                "entidad=" + entidad +
-                ", prioridad=" + prioridad +
-                ", clock=" + clock +
-                '}';
-    }
 }

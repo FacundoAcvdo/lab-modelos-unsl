@@ -1,6 +1,6 @@
 package org.example;
 
-public class TiempoDeSalidas_2 extends nextRand_S{
+public class TiempoDeSalidas_2 extends NextRand_S {
     public TiempoDeSalidas_2(Randomizer randomizer) {
         super(randomizer);
     }

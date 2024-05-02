@@ -1,23 +1,20 @@
 package org.example;
 
-public class TiempoEntreArribos_1 extends nextRand_A{
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class TiempoEntreArribos_1 extends NextRand_A {
     public TiempoEntreArribos_1(Randomizer randomizer) {
         super(randomizer);
     }
 
     @Override
     public double nextRandA(double clockInminente) {
-        Randomizer randomizer = new Randomizer1();
-        double random = randomizer.nextDouble();
-        double value;
+        ArrayList<Double> probabilidadAcumulada = new ArrayList<>(Arrays.asList(0.35,0.8,1.0));
+        ArrayList<Double> values = new ArrayList<>(Arrays.asList(10.0,15.0,17.0));
 
-        if(random < 0.35){
-            value = 10;
-        } else if(random >= 0.35 && random < 0.80) {
-            value = 15;
-        }else{
-            value = 17;
-        }
-        return value;
+        Distribucion empirica_discreta = new Empirica_Discreta(probabilidadAcumulada, values);
+
+        return empirica_discreta.getVariable(randomizer);
     }
 }

@@ -1,6 +1,6 @@
 package org.example;
 
-public class TiempoEntreArribos_2 extends nextRand_A{
+public class TiempoEntreArribos_2 extends NextRand_A {
     public TiempoEntreArribos_2(Randomizer randomizer) {
         super(randomizer);
     }
@@ -8,13 +8,13 @@ public class TiempoEntreArribos_2 extends nextRand_A{
     @Override
     public double nextRandA(double clockInminente) {
         double clock = (clockInminente % 1440) / 60;
+        Exponencial exponencial;
 
         if (clock >= 9 && clock <= 13.0 || clock >= 20 && clock <= 23) {
-            Exponencial exponencial = new Exponencial(9);
-            return exponencial.getVariable(randomizer);
+            exponencial = new Exponencial(9);
         } else {
-            Exponencial exponencial = new Exponencial(15);
-            return exponencial.getVariable(randomizer);
+            exponencial = new Exponencial(15);
         }
+        return exponencial.getVariable(randomizer);
     }
 }

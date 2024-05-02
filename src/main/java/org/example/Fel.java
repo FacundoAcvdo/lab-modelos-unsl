@@ -28,9 +28,4 @@ public class Fel {
 
         return evt;
     }
-
-    @Override
-    public String toString() {
-        return ""+fel;
-    }
 }

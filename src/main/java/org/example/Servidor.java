@@ -1,8 +1,5 @@
 package org.example;
 
-import java.util.List;
-import java.util.Random;
-
 @SuppressWarnings("FieldMayBeFinal")
 public class Servidor {
     private Evento estado;
@@ -24,7 +21,7 @@ public class Servidor {
 
     public void setDesgaste(int media, int desviacion){
         Distribucion normal = new Normal(media,desviacion);
-        desgaste = desgaste - normal.getVariable(new Randomizer1());
+        desgaste = desgaste - normal.getVariable(new Randomizer_1());
     }
     public double getDesgaste() {
         return desgaste;

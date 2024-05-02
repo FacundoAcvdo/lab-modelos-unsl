@@ -10,11 +10,4 @@ public class Entidad {
     public int getID() {
         return ID;
     }
-
-    @Override
-    public String toString() {
-        return "Entidad{" +
-                "ID=" + ID +
-                '}';
-    }
 }
