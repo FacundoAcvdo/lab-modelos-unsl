@@ -3,7 +3,7 @@ package org.example;
 import java.util.List;
 import java.util.Optional;
 
-public class CriterioEtapa1 implements Criterio{
+public class Criterio_1 implements Criterio{
     @Override
     public Optional<Servidor> getServer(List<Servidor> servers) {
         int i = 0;

@@ -42,9 +42,13 @@ public class Evento_S extends Evento{
             Evento_S salida = new Evento_S(this.getClock()+tiempoSalida.nextRandS(this.getClock()), arribo.getEntidad(), tiempoSalida);
 
             for (Servidor server : servers) {
-                if (server.getEstado() == this) server.setEstado(salida);
-                if (server.getEstado() == this) server.setDesgaste(5,1);
+                if (server.getEstado() == this){
+                    server.setEstado(salida);
+                    value = servers.indexOf(server);
+                }
             }
+
+            servers.get(value).setDesgaste(5,1);
 
             fel.insert(salida);
 

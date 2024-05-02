@@ -7,8 +7,8 @@ public class TiempoDeSalidas_2 extends nextRand_S{
 
     @Override
     public double nextRandS(double clockInminente) {
-        Uniforme uniforme = new Uniforme();
+        Uniforme uniforme = new Uniforme(10,25);
 
-        return uniforme.getVariable(randomizer, 10, 25);
+        return uniforme.getVariable(randomizer);
     }
 }

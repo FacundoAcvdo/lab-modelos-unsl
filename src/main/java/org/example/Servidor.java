@@ -23,17 +23,8 @@ public class Servidor {
     }
 
     public void setDesgaste(int media, int desviacion){
-        Random rand = new Random();
-        double sumatoria = 0;
-        double z = 0;
-
-        for (int i = 0; i < 36; i++) {
-            sumatoria = sumatoria + rand.nextDouble();
-        }
-
-        z = (sumatoria-18)/Math.sqrt(3.0);
-
-        desgaste = desgaste - (z * desviacion + media);
+        Distribucion normal = new Normal(media,desviacion);
+        desgaste = desgaste - normal.getVariable(new Randomizer1());
     }
     public double getDesgaste() {
         return desgaste;
