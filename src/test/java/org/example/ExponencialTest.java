@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.distribuciones.Distribucion;
+import org.example.distribuciones.Exponencial;
+import org.example.randomizer.Randomizer;
+import org.example.randomizer.Randomizer_P_2;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,7 +14,7 @@ class ExponencialTest {
     @Test
     public void test_1(){
         Distribucion exponencial = new Exponencial(15);
-        Randomizer randomizer = new Randomizer_Pruebas();
+        Randomizer randomizer = new Randomizer_P_2();
 
         assertAll(
                 ()-> assertEquals(0.015, exponencial.getVariable(randomizer), DELTA),
@@ -22,7 +26,7 @@ class ExponencialTest {
     @Test
     public void test_2(){
         Distribucion exponencial = new Exponencial(0);
-        Randomizer randomizer = new Randomizer_Pruebas();
+        Randomizer randomizer = new Randomizer_P_2();
 
         assertAll(
                 ()-> assertEquals(0, exponencial.getVariable(randomizer)),

@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.distribuciones.Distribucion;
+import org.example.distribuciones.Empirica_Discreta;
+import org.example.randomizer.Randomizer;
+import org.example.randomizer.Randomizer_P_2;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -16,7 +20,7 @@ class Empirica_DiscretaTest {
 
         Distribucion empirica = new Empirica_Discreta(probabilidadAcumulada, values);
 
-        Randomizer randomizer = new Randomizer_Pruebas();
+        Randomizer randomizer = new Randomizer_P_2();
 
         assertAll(
                 ()-> assertEquals(10,empirica.getVariable(randomizer)),
