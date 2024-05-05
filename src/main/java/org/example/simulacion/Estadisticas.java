@@ -20,6 +20,7 @@ public class Estadisticas {
     private double tiempoServerMax;
     private double tiempoServerMin;
     private double tiempoServer;
+    private List<String> proporcion_Ociosidad;
     private List<Double> ultimaSalida;
 
     public Estadisticas(int nroServidores, double tiempoSimulacion) {
@@ -34,6 +35,7 @@ public class Estadisticas {
         this.cantProcesados = 0;
         this.colaMin = Integer.MAX_VALUE;
         this.colaMax = 0;
+        this.proporcion_Ociosidad = new ArrayList<>();
         this.ultimaSalida = new ArrayList<>();
         this.tiempoServer = 0;
         this.tiempoServerMin = Integer.MAX_VALUE;
@@ -61,17 +63,22 @@ public class Estadisticas {
         this.cantProcesados = this.cantProcesados + 1;
     }
 
-    public void coleccionarTiempoEnServer(Evento salida, Evento evt){
-        if (salida.getClock() <= tiempoSimulacion){
-            tiempoServer = tiempoServer + (salida.getClock() - evt.getClock());
+    public void coleccionarTiempoEnServer(Double salida, Double evt){
+        if (salida <= tiempoSimulacion){
+            tiempoServer = tiempoServer + (salida - evt);
 
-            if (salida.getClock() - evt.getClock() > tiempoServerMax) tiempoServerMax = salida.getClock() - evt.getClock();
-            if (salida.getClock() - evt.getClock() < tiempoServerMin && salida.getClock() - evt.getClock() > 0) tiempoServerMin = salida.getClock() - evt.getClock();
+            if (salida - evt > tiempoServerMax) tiempoServerMax = salida - evt;
+            if (salida - evt < tiempoServerMin && salida - evt > 0) tiempoServerMin = salida - evt;
+        }else{
+            tiempoServer = tiempoServer + (tiempoSimulacion - evt);
+
+            if (tiempoSimulacion - evt > tiempoServerMax) tiempoServerMax = tiempoSimulacion - evt;
+            if ((tiempoSimulacion - evt < tiempoServerMin) && (tiempoSimulacion - evt > 0)) tiempoServerMin = tiempoSimulacion - evt;
         }
     }
 
     public void coleccionarOcio(Evento evt, Evento salida, int indexServer, List<Servidor> servers) {
-        coleccionarTiempoEnServer(salida, evt);
+        coleccionarTiempoEnServer(salida.getClock(), evt.getClock());
 
         for (int i = 0; i < servers.size(); i++) {
             if (servers.get(i).getEstado() == salida) {
@@ -86,7 +93,7 @@ public class Estadisticas {
     }
 
     public void coleccionarEspera(Evento evt, Evento arribo, Evento salida) {
-        coleccionarTiempoEnServer(salida, arribo);
+        coleccionarTiempoEnServer(salida.getClock(), arribo.getClock());
 
         espera = espera + (evt.getClock() - arribo.getClock());
 
@@ -106,7 +113,7 @@ public class Estadisticas {
         esperaMin = (esperaMin == Integer.MAX_VALUE) ? 0 : esperaMin;
         ocioMin = (ocioMin == Integer.MAX_VALUE) ? 0 : ocioMin;
         tiempoServerMin = (tiempoServerMin == Integer.MAX_VALUE) ? 0 : tiempoServerMin;
-        colaMin = (colaMin == Integer.MAX_VALUE) ? 0 : colaMin;
+        colaMin = (colaMin == Integer.MAX_VALUE) ? colaMax : colaMin;
         for (int i = 0; i < ocio.size(); i++) {
             if (servers.get(i).getEstado() == null) {
                 ocio.set(i, ocio.get(i) + tiempoSimulacion - ultimaSalida.get(i));
@@ -119,13 +126,17 @@ public class Estadisticas {
             desgastes.add(server.getDesgaste());
         }
 
+        for(Double ocios : ocio){
+            proporcion_Ociosidad.add(Math.round(((ocios / tiempoSimulacion) * 100) * 100d) / 100d + "%");
+        }
+
         return "Estadisticas:" +
             "\n-------------------------"+
             "\nocio acumulado: " + ocio +
             "\nocio mínimo: " + ocioMin +
             "\nocio máximo: " + ocioMax +
             "\nocio medio: " + (double)Math.round((ocio.getFirst()/(cantProcesados)) * 100d) / 100d +
-            "\nproporción de ociosidad: "+ (double)Math.round(((ocio.getFirst()/tiempoSimulacion)*100) * 100d) / 100d+ "%" +
+            "\nproporción de ociosidad: "+ proporcion_Ociosidad +
             "\n-------------------------"+
             "\nespera acumulada: " + espera +
             "\nespera mínima: " + esperaMin +
@@ -140,7 +151,7 @@ public class Estadisticas {
             "\ntiempo acumulado en sistema: "+tiempoServer +
             "\ntiempo máximo en sistema: " + tiempoServerMax +
             "\ntiempo mínimo en sistema: " + tiempoServerMin +
-            "\ntiempo medio en sistema: " + (double)Math.round((tiempoServer/cantProcesados) * 100d) / 100d +
+            "\ntiempo medio en sistema: " + (double)Math.round((tiempoServer/cantArribos) * 100d) / 100d +
             "\ndesgastes de las pistas: " + desgastes;
 
     }

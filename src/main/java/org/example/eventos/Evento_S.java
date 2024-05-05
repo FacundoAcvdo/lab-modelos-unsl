@@ -20,6 +20,7 @@ public class Evento_S extends Evento{
     public void planificate(Fel fel, Estadisticas stats, List<List<Evento>> colas, List<Servidor> servers, HashMap<Servidor, Integer> asociados) {
 
         int value = 0;
+        int comparador;
 
         stats.setCantProcesados();
 
@@ -44,7 +45,11 @@ public class Evento_S extends Evento{
             Evento_A arribo = (Evento_A) colas.get(value).getFirst();
             colas.get(value).removeFirst();
 
+            comparador = colas.get(value).size();
+
             Evento_S salida = new Evento_S(this.getClock()+tiempoSalida.nextRandS(this.getClock()), arribo.getEntidad(), tiempoSalida);
+
+            if(comparador < stats.getColaMin() && comparador != 0) stats.setColaMin(comparador);
 
             for (Servidor server : servers) {
                 if (server.getEstado() == this){

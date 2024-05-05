@@ -59,6 +59,12 @@ public class Engine {
             evt.planificate(fel, stats, cola, servers, asociados);
         }
 
+        for (List<Evento> colas: cola) {
+            for (Evento evt: colas) {
+                stats.coleccionarTiempoEnServer(tiempoSimulacion, evt.getClock());
+            }
+        }
+
         System.out.println(stats.toString(servers, tiempoSimulacion));
     }
 

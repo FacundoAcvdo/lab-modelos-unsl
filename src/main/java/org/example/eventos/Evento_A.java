@@ -32,10 +32,10 @@ public class Evento_A extends Evento{
 
         if(checkout.isEmpty()){
             comparador = criterio.getCola(colas).size()+1;
+
             criterio.getCola(colas).add(this);
 
             if(comparador > stats.getColaMax()) stats.setColaMax(comparador);
-            if(comparador < stats.getColaMin()) stats.setColaMin(comparador);
         }else{
             Evento_S salida = new Evento_S(this.getClock()+tiempoSalida.nextRandS(this.getClock()), this.getEntidad(), tiempoSalida);
 
