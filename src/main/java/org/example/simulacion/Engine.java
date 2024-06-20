@@ -50,6 +50,10 @@ public class Engine {
         this.asociados = build.asociador.asociar(servers, cola);
     }
 
+    public int getCantServers() {
+        return servers.size();
+    }
+
     public void run(){
         Evento_A primerArribo = new Evento_A(0, new Entidad(1), criterio,tiempoSalidas, tiempoArribos);
         fel.insert(primerArribo);
@@ -65,7 +69,11 @@ public class Engine {
             }
         }
 
-        System.out.println(stats.toString(servers, tiempoSimulacion));
+        stats.verificacion(servers, tiempoSimulacion);
+    }
+
+    public Estadisticas getStats() {
+        return stats;
     }
 
     public static class Builder {
