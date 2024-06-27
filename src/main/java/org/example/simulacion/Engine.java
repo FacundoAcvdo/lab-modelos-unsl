@@ -68,7 +68,6 @@ public class Engine {
                 stats.coleccionarTiempoEnServer(tiempoSimulacion, evt.getClock());
             }
         }
-
         stats.verificacion(servers, tiempoSimulacion);
     }
 

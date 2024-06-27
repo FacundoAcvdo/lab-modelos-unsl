@@ -19,6 +19,7 @@ public class Replicador {
     private ArrayList<Double>colaMin = new ArrayList<>();
     private ArrayList<Double>colaMax = new ArrayList<>();
     private ArrayList<Double>tiempoServer = new ArrayList<>();
+    private ArrayList<Double>tiempoServerMed = new ArrayList<>();
     private ArrayList<Double>tiempoServerMin = new ArrayList<>();
     private ArrayList<Double>tiempoServerMax = new ArrayList<>();
     private int n;
@@ -78,6 +79,7 @@ public class Replicador {
             colaMin.add((Double) eng.getStats().getColaMin());
             colaMax.add((Double) eng.getStats().getColaMax());
             tiempoServer.add(eng.getStats().getTiempoServer());
+            tiempoServerMed.add(eng.getStats().getTiempoServer()/ eng.getStats().getCantArribos());
             tiempoServerMin.add(eng.getStats().getTiempoServerMin());
             tiempoServerMax.add(eng.getStats().getTiempoServerMax());
         }
@@ -102,8 +104,9 @@ public class Replicador {
         System.out.println("    ColaMin: "+calculoIntervalos(colaMin));
         System.out.println("    ColaMax: "+calculoIntervalos(colaMax));
         System.out.println("    TiempoServer: "+calculoIntervalos(tiempoServer));
-        System.out.println("    TiempoServerMax: "+calculoIntervalos(tiempoServerMax));
-        System.out.println("    TiempoServerMin: "+calculoIntervalos(tiempoServerMin));
+        System.out.println("    TiempoEnSistemaMed: "+calculoIntervalos(tiempoServerMed));
+        System.out.println("    TiempoEnSistemaMax: "+calculoIntervalos(tiempoServerMax));
+        System.out.println("    TiempoEnSistemaMin: "+calculoIntervalos(tiempoServerMin));
         System.out.println("\n==================================================");
     }
 

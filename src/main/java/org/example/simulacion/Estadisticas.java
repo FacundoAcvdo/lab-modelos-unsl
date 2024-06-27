@@ -115,10 +115,6 @@ public class Estadisticas {
         return ocio;
     }
 
-    public double getTiempoSimulacion() {
-        return tiempoSimulacion;
-    }
-
     public double getOcioMin() {
         return ocioMin;
     }
@@ -163,73 +159,10 @@ public class Estadisticas {
         return proporcion_Ociosidad;
     }
 
-    public List<Double> getUltimaSalida() {
-        return ultimaSalida;
-    }
-
     public List<Double> getDesgastes() {
         return desgastes;
     }
 
-    public void setOcio(List<Double> ocio) {
-        this.ocio = ocio;
-    }
-
-    public void setTiempoSimulacion(double tiempoSimulacion) {
-        this.tiempoSimulacion = tiempoSimulacion;
-    }
-
-    public void setOcioMin(double ocioMin) {
-        this.ocioMin = ocioMin;
-    }
-
-    public void setOcioMax(double ocioMax) {
-        this.ocioMax = ocioMax;
-    }
-
-    public void setEspera(double espera) {
-        this.espera = espera;
-    }
-
-    public void setEsperaMin(double esperaMin) {
-        this.esperaMin = esperaMin;
-    }
-
-    public void setEsperaMax(double esperaMax) {
-        this.esperaMax = esperaMax;
-    }
-
-    public void setCantArribos(int cantArribos) {
-        this.cantArribos = cantArribos;
-    }
-
-    public void setCantProcesados(int cantProcesados) {
-        this.cantProcesados = cantProcesados;
-    }
-
-    public void setTiempoServerMax(double tiempoServerMax) {
-        this.tiempoServerMax = tiempoServerMax;
-    }
-
-    public void setTiempoServerMin(double tiempoServerMin) {
-        this.tiempoServerMin = tiempoServerMin;
-    }
-
-    public void setTiempoServer(double tiempoServer) {
-        this.tiempoServer = tiempoServer;
-    }
-
-    public void setProporcion_Ociosidad(List<Double> proporcion_Ociosidad) {
-        this.proporcion_Ociosidad = proporcion_Ociosidad;
-    }
-
-    public void setUltimaSalida(List<Double> ultimaSalida) {
-        this.ultimaSalida = ultimaSalida;
-    }
-
-    public void setDesgastes(List<Double> desgastes) {
-        this.desgastes = desgastes;
-    }
 
     public void verificacion(List<Servidor> servers, double tiempoSimulacion){
         esperaMin = (esperaMin == Integer.MAX_VALUE) ? 0 : esperaMin;
@@ -250,8 +183,6 @@ public class Estadisticas {
             proporcion_Ociosidad.add(Math.round(((ocios / tiempoSimulacion) * 100) * 100d) / 100d);
         }
     }
-
-
     @Override
     public String toString() {
         return "Estadisticas:" +
@@ -259,7 +190,6 @@ public class Estadisticas {
             "\nocio acumulado: " + ocio +
             "\nocio mínimo: " + ocioMin +
             "\nocio máximo: " + ocioMax +
-            "\nocio medio: " + (double)Math.round((ocio.getFirst()/(cantProcesados)) * 100d) / 100d +
             "\nproporción de ociosidad: "+ proporcion_Ociosidad + "%" +
             "\n-------------------------"+
             "\nespera acumulada: " + espera +
